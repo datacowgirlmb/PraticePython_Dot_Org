@@ -33,13 +33,16 @@ date_string = datetime.now().strftime("%B %d, %y %H:%M %p") + '\n\n'
 output_file.write(date_string)
 
 # Get headlines & output to file
-headlines = soup.find_all(class_='story-wrapper')
+stories = soup.find_all(class_='story-wrapper')
 headline_separator = "--------------\n"
-for item in headlines:
-    headline = item.get_text('h3').strip('h3')
-    if headline != '':
+
+for story in stories:
+    headline = story.find('h3')
+    if not headline:
+        continue
+    else:
         output_file.write(headline_separator)
-        headline = headline + '\n'
+        headline = headline.get_text() + '\n'
         output_file.write(headline)
 
 output_file.close()
